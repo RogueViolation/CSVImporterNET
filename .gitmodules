@@ -1,0 +1,3 @@
+[submodule "CSVImporterNET_Database"]
+	path = CSVImporterNET_Database
+	url = https://github.com/RogueViolation/CSVImporterNET_Database.git
