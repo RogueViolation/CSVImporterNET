@@ -35,6 +35,8 @@ namespace CSVImporterNET
             {
                 Console.WriteLine("An error occured while importing!");
             }
+            Console.WriteLine("Press any key to continue. . .");
+            Console.ReadKey();
         }
     }
 }
