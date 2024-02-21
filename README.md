@@ -3,7 +3,7 @@
 
 **How to run**
 
-- Download attached package
+- Download latest Release
 - Extract
 - Create database clone from *.sql
 - Update App.config with Your SQL Server details
