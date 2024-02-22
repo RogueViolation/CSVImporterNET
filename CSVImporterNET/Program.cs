@@ -1,12 +1,15 @@
 ﻿using Importer.ApplicationDataAccess;
 using Importer.ConfigurationReader;
 using Microsoft.Extensions.DependencyInjection;
+//.NET 6 feature to omit "Console." for every Console operation
+using static System.Console;
 namespace CSVImporterNET
 {
     public class Program
     {
         static void Main(string[] args)
         {
+            //DI used for cleaner code, testability and no class init from Main
             ServiceCollection services = new();
             services.AddSingleton<IConfigurationReader, ConfigurationReader>()
                     .AddSingleton<IDataAccess, DataAccess>();
@@ -24,19 +27,30 @@ namespace CSVImporterNET
         {
             _dataAccess = dataAccess;
         }
+        //Main application
         public void RunApp()
         {
-            Console.WriteLine("CSVImporterNET..");
-            if (_dataAccess.ImportPersonCSVToDB("./file.csv"))
+            WriteLine("CSVImporterNET..");
+            Write("Please enter the path to CSV file. ");
+            ForegroundColor = ConsoleColor.Yellow;
+            Write("To use the default file press Enter. \n");
+            ResetColor();
+            var path = ReadLine();
+            //Pass the entered value for import logic
+            if (_dataAccess.ImportPersonCSVToDB(string.IsNullOrEmpty(path) ? "./file.csv" : path))
             {
-                Console.WriteLine("CSV imported successfully!");
+                ForegroundColor = ConsoleColor.Green;
+                WriteLine("CSV imported successfully!");
+                ResetColor();
             }
             else
             {
-                Console.WriteLine("An error occured while importing!");
+                ForegroundColor = ConsoleColor.Red;
+                WriteLine("An error occured while importing!");
+                ResetColor();
             }
-            Console.WriteLine("Press any key to continue. . .");
-            Console.ReadKey();
+            WriteLine("Press any key to continue. . .");
+            ReadKey();
         }
     }
 }
