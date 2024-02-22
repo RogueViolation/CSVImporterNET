@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="file.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

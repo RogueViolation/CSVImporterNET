@@ -5,6 +5,6 @@ namespace Importer.ApplicationDataAccess
 {
     public interface IDataAccess
     {
-        bool ImportPersonCSVToDB(string csvPath);
+        bool ImportPersonCSVToDB(string csvPath, bool headerFlag);
     }
 }

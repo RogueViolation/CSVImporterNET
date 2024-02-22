@@ -30,14 +30,23 @@ namespace CSVImporterNET
         //Main application
         public void RunApp()
         {
+            bool headerFlag = false;
             WriteLine("CSVImporterNET..");
             Write("Please enter the path to CSV file. ");
+            WriteLine("CSV file format: firstname, lastname, age, email.");
             ForegroundColor = ConsoleColor.Yellow;
             Write("To use the default file press Enter. \n");
             ResetColor();
             var path = ReadLine();
+            if (!string.IsNullOrEmpty(path))
+            {
+                Write("CSV file contains header? [Y]es/[N]o: ");
+                //Only pass true if Y is pressed
+                headerFlag = ReadLine() == "Y" ? true : false;
+                WriteLine("");
+            }
             //Pass the entered value for import logic
-            if (_dataAccess.ImportPersonCSVToDB(string.IsNullOrEmpty(path) ? "./file.csv" : path))
+            if (_dataAccess.ImportPersonCSVToDB(string.IsNullOrEmpty(path) ? "./file.csv" : path, headerFlag))
             {
                 ForegroundColor = ConsoleColor.Green;
                 WriteLine("CSV imported successfully!");

@@ -17,7 +17,7 @@ namespace Importer.ApplicationDataAccess
 
 
 
-        public bool ImportPersonCSVToDB(string csvPath)
+        public bool ImportPersonCSVToDB(string csvPath, bool headerFlag)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace Importer.ApplicationDataAccess
                     //For performance it is better to submit a DataTable and process it on the DB rather than .NET code without the need of extra logic
                     connection.Open();
                     var cmd = new SqlCommand("dbo.ImportCSVFromDataTable", connection);
-                    cmd.Parameters.Add(new SqlParameter("@csvDataTable", ToDataTable(ReadPersonCSVAsEnumerable(csvPath))));
+                    cmd.Parameters.Add(new SqlParameter("@csvDataTable", ToDataTable(ReadPersonCSVAsEnumerable(csvPath, headerFlag))));
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.ExecuteNonQuery();
                 }
@@ -39,8 +39,8 @@ namespace Importer.ApplicationDataAccess
             }
         }
 
-        //Converts CSV to Person object IEnumerable
-        private IEnumerable<Person> ReadPersonCSVAsEnumerable(string path) => File.ReadAllLines(path).Select(v => Person.FromCsv(v));
+        //Converts CSV to Person object IEnumerable. Header flag just skips the first row since CSV headers do not contain any useful info in this case
+        private IEnumerable<Person> ReadPersonCSVAsEnumerable(string path, bool headerFlag) => File.ReadAllLines(path).Skip(headerFlag ? 1 : 0).Select(v => Person.FromCsv(v));
 
         //Converts generic IEnumerable to a DataTable. Generics for reusability
         private static DataTable ToDataTable<T>(IEnumerable<T> items)
